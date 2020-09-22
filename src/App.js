@@ -2,85 +2,55 @@ import React, { Component } from 'react';
 import Rect from './Rect';
 import './App.css';
 
+let theme = {
+  light: {
+    backgroundColor: "#eef",
+    color: "#006",
+    padding: "10px"
+  },
+  dark: {
+    backgroundColor: "#006",
+    color: "#eef",
+    padding: "10px"
+  }
+}
+
+const LightThemeContext = React.createContext(theme.light);
+const DarkThemeContext = React.createContext(theme.dark);
+
+
 class App extends Component {
-  data = [
-    "This is list sample.",
-    "これはリストのサンプルです。",
-    "配列をリストに変換します。"
-  ]
-
-  msgStyle = {
-    fontSize: "20pt",
-    color: "#900",
-    margin: "20px 0px",
-    padding: "5px"
-  }
-
-  constructor(props) {
-    super();
-    this.state = {
-      list: this.data
-    }
-  }
+  static contextType = LightThemeContext;
 
   render() {
-    return (
-      <div>
-        <h1>React</h1>
-        <h2 style={this.msgStyle}>show list.</h2>
-        <List title="サンプル・リスト" data={this.data} />
+    return(
+      <div style={ this.context }>
+        <Title value="Content page" />
+        <Message value="This is Content sample." />
+        <Message value="※これはテーマのサンプルです。" />
       </div>
     )
   }
 }
 
-class List extends Component {
-  number = 1;
-
-  title = {
-    fontSize: "20pt",
-    fontWeight: "bold",
-    color: "blue"
-  }
+class Title extends Component {
+  static contextType = LightThemeContext;
 
   render() {
-    let data = this.props.data;
     return (
-      <div>
-        <p style={this.title}>{this.props.title}</p>
-        <ul>
-          {data.map((item) => 
-            <Item number={this.number++} value={item} />
-          )}
-        </ul>
-      </div>
+    <h2 style={this.context }>{ this.props.value }</h2>
     )
   }
 }
 
-class Item extends Component {
-  li = {
-    listStyleType: "square",
-    fontsize: "16pt",
-    color: "#06",
-    margin: "0px",
-    padding: "0px"
-  }
-
-  num = {
-    fontWeight: "bold",
-    color: "red"
-  }
+class Message extends Component {
+  static contextType = DarkThemeContext;
 
   render() {
     return (
-      <li style={this.li}>
-        <span style={this.num}>[{this.props.number}] </span>
-        {this.props.value}
-      </li>
+    <p style={this.context }>{ this.props.value }</p>
     )
   }
 }
-
 
 export default App;
